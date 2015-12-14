@@ -7,12 +7,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.codepath.apps.awesometwitter.models.Tweet;
+import com.codepath.apps.awesometwitter.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -22,6 +25,8 @@ public class TimelineActivity extends AppCompatActivity {
     private TweetsArrayAdapter aTweets;
     private ArrayList<Tweet> tweets;
     private ListView lvTweets;
+    private User currentUser;
+    private final int REQUEST_CODE = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +81,7 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void populateTimeline(int offset){
-        client.getHomeTimeline(offset, new JsonHttpResponseHandler(){
+        client.getHomeTimeline(offset, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 //                super.onSuccess(statusCode, headers, response);
@@ -106,9 +111,24 @@ public class TimelineActivity extends AppCompatActivity {
         composeItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
-                i.putExtra("Twitter", "Test");
-                startActivity(i);
+                client.getUserInfo(new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        Log.d("DEBUG", response.toString());
+                        currentUser = User.fromJson(response);
+                        Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
+                        i.putExtra("fullName", currentUser.getName());
+                        i.putExtra("userName", currentUser.getScreenName());
+                        i.putExtra("picUrl", currentUser.getProfilePicUrl());
+                        startActivityForResult(i, REQUEST_CODE);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//                super.onFailure(statusCode, headers, throwable, errorResponse);
+                        Log.d("DEBUG", errorResponse.toString());
+                    }
+                });
                 return false;
             }
         });
@@ -116,19 +136,19 @@ public class TimelineActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_compose) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+//            String value = data.getExtras().getString("value");
+            int index = data.getExtras().getInt("index", 0);
+            String strFullName = data.getExtras().getString("fullName");
+            String strUserName = data.getExtras().getString("userName");
+            String strPicUrl = data.getExtras().getString("picUrl");
+            String strTweetMessage = data.getExtras().getString("body");
+            Toast.makeText(this, ("body : " + strTweetMessage), Toast.LENGTH_SHORT).show();
+//            items.set(index, value);
+//            itemsAdapter.notifyDataSetChanged();
+        }
+    }
 
 }

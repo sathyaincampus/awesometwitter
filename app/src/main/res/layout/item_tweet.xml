@@ -55,5 +55,6 @@
         android:layout_below="@id/tvUserName"
         android:layout_toRightOf="@+id/ivProfilePic"
         android:textColor="@android:color/black"
-        android:paddingBottom="5dp"/>
+        android:paddingBottom="5dp"
+        android:autoLink="web" />
 </RelativeLayout>
