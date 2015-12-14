@@ -29,7 +29,7 @@ public class ComposeActivity  extends AppCompatActivity {
         String t = getIntent().getStringExtra("Twitter");
         btTweet = (Button) findViewById(R.id.btTweet);
         etTweetMessage = (EditText) findViewById(R.id.etTweetMessage);
-        strTweetMessage = etTweetMessage.getText().toString();
+
         client = TwitterApp.getRestClient();
 
 
@@ -37,6 +37,7 @@ public class ComposeActivity  extends AppCompatActivity {
         btTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                strTweetMessage = etTweetMessage.getText().toString();
                 client.postTweet(strTweetMessage , new JsonHttpResponseHandler(){
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
