@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Awesome Twitter</string>
+    <string name="login_label">Connect with Twitter</string>
+    <string name="title_activity_timline">Home</string>
+    <string name="title_activity_compose">Share Status</string>
+
+    <string name="action_compose">Compose</string>
+    <string name="action_settings">Settings</string>
+
+</resources>
