@@ -1,10 +1,15 @@
 package com.codepath.apps.awesometwitter.models;
 
+import android.text.format.DateUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by s.srinivas2 on 12/12/15.
@@ -107,9 +112,37 @@ import java.util.ArrayList;
 
  */
 public class Tweet {
+
+    public Tweet(){
+
+    }
+
+    public Tweet(long uid, User user, String body, String createdAt){
+        this.uid = uid;
+        this.user = user;
+        this.body = body;
+        this.createdAt = createdAt;
+
+    }
     public User getUser() {
         return user;
     }
+
+//    public void setBody(String body) {
+//        this.body = body;
+//    }
+//
+//    public void setUid(long uid) {
+//        this.uid = uid;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+//
+//    public void setCreatedAt(String createdAt) {
+//        this.createdAt = createdAt;
+//    }
 
     private String body;
     private long uid;
@@ -160,5 +193,22 @@ public class Tweet {
             }
         }
         return tweets;
+    }
+
+    public static String getRelativeTimeAgo(String rawJsonDate) {
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+
+        String relativeDate = "";
+        try {
+            long dateMillis = sf.parse(rawJsonDate).getTime();
+            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return relativeDate;
     }
 }

@@ -17,7 +17,10 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class TimelineActivity extends AppCompatActivity {
 
@@ -120,12 +123,13 @@ public class TimelineActivity extends AppCompatActivity {
                         i.putExtra("fullName", currentUser.getName());
                         i.putExtra("userName", currentUser.getScreenName());
                         i.putExtra("picUrl", currentUser.getProfilePicUrl());
+                        i.putExtra("accountUrl", currentUser.getAccountUrl());
+                        i.putExtra("id", currentUser.getId());
                         startActivityForResult(i, REQUEST_CODE);
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                super.onFailure(statusCode, headers, throwable, errorResponse);
                         Log.d("DEBUG", errorResponse.toString());
                     }
                 });
@@ -139,15 +143,26 @@ public class TimelineActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-//            String value = data.getExtras().getString("value");
             int index = data.getExtras().getInt("index", 0);
             String strFullName = data.getExtras().getString("fullName");
             String strUserName = data.getExtras().getString("userName");
             String strPicUrl = data.getExtras().getString("picUrl");
+            String strAccountUrl = data.getExtras().getString("accountUrl");
+            Long id = data.getExtras().getLong("id", 0);
+            Long uid = data.getExtras().getLong("uid", 0);
             String strTweetMessage = data.getExtras().getString("body");
             Toast.makeText(this, ("body : " + strTweetMessage), Toast.LENGTH_SHORT).show();
-//            items.set(index, value);
-//            itemsAdapter.notifyDataSetChanged();
+            User u = new User(strFullName, strUserName, uid, strPicUrl, strAccountUrl);
+
+            String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+            SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+            sf.setLenient(true);
+            String currentDateandTime = sf.format(new Date());
+
+            Log.d("DEBUG", "current time : " + currentDateandTime);
+            Tweet myTweet = new Tweet(id, u, strTweetMessage, currentDateandTime);
+            aTweets.insert(myTweet, 0);
+            aTweets.notifyDataSetChanged();
         }
     }
 

@@ -15,6 +15,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.Header;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -29,15 +30,18 @@ public class ComposeActivity  extends AppCompatActivity {
     private TwitterClient client;
     private ImageView ivComposeProfilePic;
     private String strTweetMessage;
-    private String strFullName, strUserName, strPicUrl;
+    private String strFullName, strUserName, strPicUrl, strAccountUrl;
+    Long id, uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
         strFullName = getIntent().getStringExtra("fullName");
-        strUserName = "@" + getIntent().getStringExtra("userName");
+        strUserName = getIntent().getStringExtra("userName");
         strPicUrl = getIntent().getStringExtra("picUrl");
+        strAccountUrl = getIntent().getStringExtra("accountUrl");
+        id = getIntent().getLongExtra("id", 0);
         btTweet = (Button) findViewById(R.id.btTweet);
         btCancel = (Button) findViewById(R.id.btCancel);
         etTweetMessage = (EditText) findViewById(R.id.etTweetMessage);
@@ -45,7 +49,7 @@ public class ComposeActivity  extends AppCompatActivity {
         tvComposeUserName = (TextView) findViewById(R.id.tvComposeUserName);
         ivComposeProfilePic = (ImageView) findViewById(R.id.ivComposeProfilePic);
         tvComposeFullName.setText(strFullName);
-        tvComposeUserName.setText(strUserName);
+        tvComposeUserName.setText("@" + strUserName);
         ivComposeProfilePic.setImageResource(android.R.color.transparent);
         Picasso.with(getApplicationContext()).load(strPicUrl).into(ivComposeProfilePic);
 
@@ -89,14 +93,20 @@ public class ComposeActivity  extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         Log.d("DEBUG", response.toString());
+                        try {
+                            uid = response.getJSONObject("user").getLong("id");
+                            id = response.getLong("id");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         Intent data = new Intent();
-                        data.putExtra("index", 0);
-//        Toast.makeText(this, ("value : " + etCurrentItem.getText().toString()), Toast.LENGTH_SHORT).show();
                         data.putExtra("fullName", strFullName);
                         data.putExtra("userName", strUserName);
                         data.putExtra("picUrl", strPicUrl);
+                        data.putExtra("accountUrl", strTweetMessage);
+                        data.putExtra("id", id);
+                        data.putExtra("uid", uid);
                         data.putExtra("body", strTweetMessage);
-//                        Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
                         Toast.makeText(getApplicationContext(), "Posted successfully!", Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK, data);
                         finish();

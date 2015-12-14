@@ -66,6 +66,39 @@ import org.json.JSONObject;
  },
  */
 public class User {
+
+    public User(){
+
+    }
+
+    public User(String name, String screenName, long id, String profilePicUrl, String accountUrl){
+        this.name = name;
+        this.screenName = screenName;
+        this.id = id;
+        this.profilePicUrl = profilePicUrl;
+        this.accountUrl = accountUrl;
+    }
+
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//
+//    public void setScreenName(String screenName) {
+//        this.screenName = screenName;
+//    }
+//
+//    public void setId(long id) {
+//        this.id = id;
+//    }
+//
+//    public void setProfilePicUrl(String profilePicUrl) {
+//        this.profilePicUrl = profilePicUrl;
+//    }
+//
+//    public void setAccountUrl(String accountUrl) {
+//        this.accountUrl = accountUrl;
+//    }
+
     private String name;
     private String screenName;
     private long id;

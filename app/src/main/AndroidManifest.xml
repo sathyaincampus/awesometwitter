@@ -50,11 +50,13 @@
         <activity
             android:name=".TimelineActivity"
             android:label="@string/title_activity_timline"
+            android:theme="@style/AppBaseTheme"
             >
         </activity>
         <activity
             android:name=".ComposeActivity"
-            android:label="@string/title_activity_compose" >
+            android:label="@string/title_activity_compose"
+            android:theme="@style/AppBaseTheme">
         </activity>
     </application>
 

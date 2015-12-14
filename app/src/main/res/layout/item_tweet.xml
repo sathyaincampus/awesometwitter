@@ -56,5 +56,6 @@
         android:layout_toRightOf="@+id/ivProfilePic"
         android:textColor="@android:color/black"
         android:paddingBottom="5dp"
-        android:autoLink="web" />
+        android:autoLink="web"
+        android:textColorLink="@android:color/holo_blue_dark"/>
 </RelativeLayout>
