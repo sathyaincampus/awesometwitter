@@ -62,24 +62,7 @@ public class ComposeActivity  extends AppCompatActivity {
             }
         });
 
-//        etTweetMessage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus){
-//                    strTweetMessage = etTweetMessage.getText().toString();
-//                    if (strTweetMessage.equals(getString(R.string.text_share_status))){
-//                        strTweetMessage = "";
-//                    }
-//                }
-//            }
-//        });
 
-//        etTweetMessage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
 
 
         btTweet.setOnClickListener(new View.OnClickListener() {

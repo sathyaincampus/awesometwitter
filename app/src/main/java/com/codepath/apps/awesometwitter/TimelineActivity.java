@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.codepath.apps.awesometwitter.models.Tweet;
 import com.codepath.apps.awesometwitter.models.User;
@@ -83,7 +82,13 @@ public class TimelineActivity extends AppCompatActivity {
         populateTimeline(offset);
     }
 
-    private void populateTimeline(int offset){
+    private void populateTimeline(int page){
+        int offset;
+        if (page != 1) {
+            offset = (page-1)*25;
+        } else{
+            offset = 1;
+        }
         client.getHomeTimeline(offset, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -94,13 +99,10 @@ public class TimelineActivity extends AppCompatActivity {
                 // Load the model data in to listview
                 aTweets.addAll(Tweet.fromJsonArray(response));
                 Log.d("DEBUG", aTweets.toString());
-//                for()
-//                Tweet.fromJson(JSONArray);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-//                super.onFailure(statusCode, headers, throwable, errorResponse);
                 Log.d("DEBUG", errorResponse.toString());
             }
         });
@@ -151,7 +153,7 @@ public class TimelineActivity extends AppCompatActivity {
             Long id = data.getExtras().getLong("id", 0);
             Long uid = data.getExtras().getLong("uid", 0);
             String strTweetMessage = data.getExtras().getString("body");
-            Toast.makeText(this, ("body : " + strTweetMessage), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, ("body : " + strTweetMessage), Toast.LENGTH_SHORT).show();
             User u = new User(strFullName, strUserName, uid, strPicUrl, strAccountUrl);
 
             String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
@@ -159,7 +161,7 @@ public class TimelineActivity extends AppCompatActivity {
             sf.setLenient(true);
             String currentDateandTime = sf.format(new Date());
 
-            Log.d("DEBUG", "current time : " + currentDateandTime);
+//            Log.d("DEBUG", "current time : " + currentDateandTime);
             Tweet myTweet = new Tweet(id, u, strTweetMessage, currentDateandTime);
             aTweets.insert(myTweet, 0);
             aTweets.notifyDataSetChanged();
