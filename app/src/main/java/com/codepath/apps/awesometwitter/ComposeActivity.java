@@ -1,8 +1,11 @@
 package com.codepath.apps.awesometwitter;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +29,7 @@ public class ComposeActivity  extends AppCompatActivity {
     private Button btTweet, btCancel;
     private EditText etTweetMessage;
     private TextView tvComposeFullName;
-    private TextView tvComposeUserName;
+    private TextView tvComposeUserName, tvCharacterCount;
     private TwitterClient client;
     private ImageView ivComposeProfilePic;
     private String strTweetMessage;
@@ -47,6 +50,7 @@ public class ComposeActivity  extends AppCompatActivity {
         etTweetMessage = (EditText) findViewById(R.id.etTweetMessage);
         tvComposeFullName = (TextView) findViewById(R.id.tvComposeFullName);
         tvComposeUserName = (TextView) findViewById(R.id.tvComposeUserName);
+        tvCharacterCount = (TextView) findViewById(R.id.tvCharacterCount);
         ivComposeProfilePic = (ImageView) findViewById(R.id.ivComposeProfilePic);
         tvComposeFullName.setText(strFullName);
         tvComposeUserName.setText("@" + strUserName);
@@ -54,6 +58,36 @@ public class ComposeActivity  extends AppCompatActivity {
         Picasso.with(getApplicationContext()).load(strPicUrl).into(ivComposeProfilePic);
 
         client = TwitterApp.getRestClient();
+
+        etTweetMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String countText;
+                int charLength = etTweetMessage.getText().length();
+                countText = charLength + " / 140";
+                tvCharacterCount.setText(countText);
+                if (charLength > 140) {
+                    tvCharacterCount.setTextColor(Color.parseColor("#FF0000"));
+                    btTweet.setBackgroundResource(android.R.color.darker_gray);
+                    btTweet.setEnabled(false);
+                }
+                if (charLength <= 140 && !btTweet.isEnabled()) {
+                    tvCharacterCount.setTextColor(Color.parseColor("#000000"));
+                    btTweet.setBackgroundResource(android.R.color.holo_blue_light);
+                    btTweet.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         btCancel.setOnClickListener(new View.OnClickListener() {
             @Override

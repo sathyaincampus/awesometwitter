@@ -1,6 +1,7 @@
 package com.codepath.apps.awesometwitter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.codepath.apps.awesometwitter.models.Tweet;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 
 import java.util.List;
 
@@ -51,7 +54,19 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
 
         // Clear old image
         ivProfilePic.setImageResource(android.R.color.transparent);
-        Picasso.with(getContext()).load(tweet.getUser().getProfilePicUrl()).into(ivProfilePic);
+//        Picasso.with(getContext()).load(tweet.getUser().getProfilePicUrl()).into(ivProfilePic);
+        Transformation transformation = new RoundedTransformationBuilder()
+                .borderColor(Color.BLACK)
+                .borderWidthDp(3)
+                .cornerRadiusDp(30)
+                .oval(false)
+                .build();
+        Picasso.with(getContext())
+                .load(tweet.getUser().getProfilePicUrl())
+                .resize(150, 0)
+                .transform(transformation)
+                .into(ivProfilePic);
+
         // return view to insert in to the list
         return convertView;
     }

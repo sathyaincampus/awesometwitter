@@ -49,14 +49,26 @@
         android:layout_below="@id/ivComposeProfilePic"
         android:hint="@string/text_share_status"
         android:layout_width="match_parent"
+        android:background="@android:color/background_light"
         android:layout_height="100dp" />
+
+    <TextView
+        android:id="@+id/tvCharacterCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:layout_below="@+id/etTweetMessage"
+        android:text="0 / 140"
+        android:textColor="@android:color/black"
+        android:padding="5dp"
+     />
 
     <Button
         android:id="@+id/btCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cancel"
-        android:layout_below="@+id/etTweetMessage"
+        android:layout_below="@+id/tvCharacterCount"
         android:layout_alignParentLeft="true"
         android:background="@android:color/holo_red_dark"
         android:textColor="@android:color/white"
@@ -71,7 +83,7 @@
         android:background="@android:color/holo_blue_light"
         android:textColor="@android:color/white"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/etTweetMessage"
+        android:layout_below="@+id/tvCharacterCount"
         android:padding="5dp"
         />
 

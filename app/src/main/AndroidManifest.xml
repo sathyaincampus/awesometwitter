@@ -49,8 +49,9 @@
         </activity>
         <activity
             android:name=".TimelineActivity"
-            android:label="@string/title_activity_timline"
+            android:label="@string/title_activity_timeline"
             android:theme="@style/AppBaseTheme"
+            android:icon="@drawable/twitter_circle_filled"
             >
         </activity>
         <activity

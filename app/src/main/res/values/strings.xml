@@ -3,7 +3,7 @@
 
     <string name="app_name">Awesome Twitter</string>
     <string name="login_label">Connect with Twitter</string>
-    <string name="title_activity_timline">Home</string>
+    <string name="title_activity_timeline">  Home</string>
     <string name="title_activity_compose">Share Status</string>
 
     <string name="text_share_status">Enter the status to Share</string>
