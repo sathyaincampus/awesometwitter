@@ -1,4 +1,4 @@
-package com.codepath.apps.awesometwitter;
+package com.codepath.apps.awesometwitter.views.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,24 +9,25 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codepath.apps.awesometwitter.R;
 import com.codepath.apps.awesometwitter.models.Tweet;
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
-import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 
 import java.util.List;
 
 /**
  * Created by s.srinivas2 on 12/12/15.
  */
-public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
+public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
     public TweetsArrayAdapter(Context context, List<Tweet> tweets){
         super(context, android.R.layout.simple_list_item_1, tweets);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//        return super.getView(position, convertView, parent);
+        //        return super.getView(position, convertView, parent);
         // Get Tweet
         Tweet tweet = getItem(position);
         // Find or inflate the Template
@@ -44,8 +45,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
         tvUserName.setText("@"+tweet.getUser().getScreenName());
         tvPostBody.setText(tweet.getBody());
 
-//        Long createdTime = Long.parseLong(tweet.getCreatedAt()) * 1000;
-//        String createdAt = DateUtils.getRelativeTimeSpanString(createdTime).toString();
+        //        Long createdTime = Long.parseLong(tweet.getCreatedAt()) * 1000;
+        //        String createdAt = DateUtils.getRelativeTimeSpanString(createdTime).toString();
         String RelativeTime = Tweet.getRelativeTimeAgo(tweet.getCreatedAt());
         RelativeTime = RelativeTime.replace(" ago", "");
         RelativeTime = RelativeTime.replace(" hours", "h").replace(" minutes", "m").replace(" seconds", "s");
@@ -54,7 +55,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
 
         // Clear old image
         ivProfilePic.setImageResource(android.R.color.transparent);
-//        Picasso.with(getContext()).load(tweet.getUser().getProfilePicUrl()).into(ivProfilePic);
+        //        Picasso.with(getContext()).load(tweet.getUser().getProfilePicUrl()).into(ivProfilePic);
         Transformation transformation = new RoundedTransformationBuilder()
                 .borderColor(Color.BLACK)
                 .borderWidthDp(3)

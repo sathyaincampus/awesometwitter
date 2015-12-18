@@ -1,6 +1,22 @@
-package com.codepath.apps.awesometwitter;
+package com.codepath.apps.awesometwitter.managers;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.codepath.apps.awesometwitter.R;
+import com.codepath.apps.awesometwitter.network.TwitterClient;
+import com.codepath.apps.awesometwitter.models.Tweet;
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
+
+import java.util.List;
 
 /*
  * This is the Android application itself and is used to configure various settings
@@ -23,4 +39,6 @@ public class TwitterApp extends com.activeandroid.app.Application {
 	public static TwitterClient getRestClient() {
 		return (TwitterClient) TwitterClient.getInstance(TwitterClient.class, TwitterApp.context);
 	}
+
+
 }

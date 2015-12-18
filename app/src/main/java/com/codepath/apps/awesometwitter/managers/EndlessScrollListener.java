@@ -1,4 +1,4 @@
-package com.codepath.apps.awesometwitter;
+package com.codepath.apps.awesometwitter.managers;
 
 /**
  * Created by s.srinivas2 on 12/13/15.

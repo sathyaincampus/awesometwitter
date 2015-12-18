@@ -1,4 +1,4 @@
-package com.codepath.apps.awesometwitter;
+package com.codepath.apps.awesometwitter.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codepath.apps.awesometwitter.R;
+import com.codepath.apps.awesometwitter.managers.TwitterApp;
+import com.codepath.apps.awesometwitter.network.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 

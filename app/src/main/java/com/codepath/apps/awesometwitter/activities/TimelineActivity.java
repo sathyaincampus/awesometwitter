@@ -1,4 +1,4 @@
-package com.codepath.apps.awesometwitter;
+package com.codepath.apps.awesometwitter.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.codepath.apps.awesometwitter.R;
+import com.codepath.apps.awesometwitter.managers.EndlessScrollListener;
+import com.codepath.apps.awesometwitter.managers.TwitterApp;
 import com.codepath.apps.awesometwitter.models.Tweet;
 import com.codepath.apps.awesometwitter.models.User;
+import com.codepath.apps.awesometwitter.network.TwitterClient;
+import com.codepath.apps.awesometwitter.views.adapters.TweetsArrayAdapter;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
