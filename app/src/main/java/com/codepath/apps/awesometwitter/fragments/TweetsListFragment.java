@@ -28,6 +28,7 @@ public class TweetsListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         View v = inflater.inflate(R.layout.fragment_tweets_list, parent, false);
         lvTweets = (ListView) v.findViewById(R.id.lvTweets);
         // Connect Adapater with the ListView

@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -15,24 +13,16 @@ import com.codepath.apps.awesometwitter.R;
 import com.codepath.apps.awesometwitter.fragments.HomeTimelineFragment;
 import com.codepath.apps.awesometwitter.fragments.MentionsTimelineFragment;
 import com.codepath.apps.awesometwitter.fragments.TweetsListFragment;
-import com.codepath.apps.awesometwitter.models.Tweet;
+import com.codepath.apps.awesometwitter.managers.TwitterApp;
 import com.codepath.apps.awesometwitter.models.User;
 import com.codepath.apps.awesometwitter.network.TwitterClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class TimelineActivity extends AppCompatActivity {
 
     private TweetsListFragment fragmentTweetsList;
     private TwitterClient client;
     private User currentUser;
-    private final int REQUEST_CODE = 20;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +44,11 @@ public class TimelineActivity extends AppCompatActivity {
         tabStrip.setViewPager(vpPager);
 
 
-//        client = TwitterApp.getRestClient();
-//
-//        if (savedInstanceState == null){
-//            fragmentTweetsList = (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
-//        }
+        client = TwitterApp.getRestClient();
+
+        if (savedInstanceState == null){
+            fragmentTweetsList = new HomeTimelineFragment();
+        }
 
 //        populateTimeline(1, client, fragmentTweetsList.getAdapter());
 
@@ -108,68 +98,15 @@ public class TimelineActivity extends AppCompatActivity {
 ////        });
 //    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home_timeline, menu);
-        MenuItem composeItem = menu.findItem(R.id.action_compose);
-        composeItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                client.getUserInfo(new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        Log.d("DEBUG", response.toString());
-                        currentUser = User.fromJson(response);
-                        Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
-                        i.putExtra("fullName", currentUser.getName());
-                        i.putExtra("userName", currentUser.getScreenName());
-                        i.putExtra("picUrl", currentUser.getProfilePicUrl());
-                        i.putExtra("accountUrl", currentUser.getAccountUrl());
-                        i.putExtra("id", currentUser.getId());
-                        startActivityForResult(i, REQUEST_CODE);
-                    }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        Log.d("DEBUG", errorResponse.toString());
-                    }
-                });
-                return false;
-            }
-        });
 
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            int index = data.getExtras().getInt("index", 0);
-            String strFullName = data.getExtras().getString("fullName");
-            String strUserName = data.getExtras().getString("userName");
-            String strPicUrl = data.getExtras().getString("picUrl");
-            String strAccountUrl = data.getExtras().getString("accountUrl");
-            Long id = data.getExtras().getLong("id", 0);
-            Long uid = data.getExtras().getLong("uid", 0);
-            String strTweetMessage = data.getExtras().getString("body");
-            User u = new User(strFullName, strUserName, uid, strPicUrl, strAccountUrl);
-
-            String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-            SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
-            sf.setLenient(true);
-            String currentDateandTime = sf.format(new Date());
-
-            Tweet myTweet = new Tweet(id, u, strTweetMessage, currentDateandTime);
-            fragmentTweetsList.getAdapter().insert(myTweet, 0);
-            fragmentTweetsList.getAdapter().notifyDataSetChanged();
-        }
-    }
 
     public void onProfileView(MenuItem mi){
         Intent i = new Intent(this, ProfileActivity.class);
         startActivity(i);
     }
+
 
     // Return the order of fragments in the view pager
     public class TweetsPagerAdapter extends FragmentPagerAdapter{
@@ -192,6 +129,7 @@ public class TimelineActivity extends AppCompatActivity {
             }
         }
 
+        
         // Returns how many fragments are available
         @Override
         public int getCount() {

@@ -1,5 +1,6 @@
 package com.codepath.apps.awesometwitter.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -128,7 +129,7 @@ public class ComposeActivity  extends AppCompatActivity {
                         data.putExtra("uid", uid);
                         data.putExtra("body", strTweetMessage);
                         Toast.makeText(getApplicationContext(), "Posted successfully!", Toast.LENGTH_SHORT).show();
-                        setResult(RESULT_OK, data);
+                        setResult(Activity.RESULT_OK, data);
                         finish();
                     }
 
