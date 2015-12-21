@@ -2,36 +2,35 @@ package com.codepath.apps.awesometwitter.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.awesometwitter.R;
-import com.codepath.apps.awesometwitter.managers.EndlessScrollListener;
-import com.codepath.apps.awesometwitter.managers.TwitterApp;
+import com.codepath.apps.awesometwitter.fragments.HomeTimelineFragment;
+import com.codepath.apps.awesometwitter.fragments.MentionsTimelineFragment;
+import com.codepath.apps.awesometwitter.fragments.TweetsListFragment;
 import com.codepath.apps.awesometwitter.models.Tweet;
 import com.codepath.apps.awesometwitter.models.User;
 import com.codepath.apps.awesometwitter.network.TwitterClient;
-import com.codepath.apps.awesometwitter.views.adapters.TweetsArrayAdapter;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 public class TimelineActivity extends AppCompatActivity {
 
+    private TweetsListFragment fragmentTweetsList;
     private TwitterClient client;
-    private TweetsArrayAdapter aTweets;
-    private ArrayList<Tweet> tweets;
-    private ListView lvTweets;
     private User currentUser;
     private final int REQUEST_CODE = 20;
 
@@ -45,36 +44,23 @@ public class TimelineActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.twitter_circle_filled);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-        lvTweets = (ListView) findViewById(R.id.lvTweets);
-
-
-
-        // Create ArrayList
-        tweets = new ArrayList<Tweet>();
-        // Construct Adapter from the datasource
-        aTweets = new TweetsArrayAdapter(this, tweets);
-        // Connect Adapater with the ListView
-        lvTweets.setAdapter(aTweets);
-        client = TwitterApp.getRestClient();
-
-        // Attach the listener to the AdapterView onCreate
-        lvTweets.setOnScrollListener(new EndlessScrollListener() {
-            @Override
-            public boolean onLoadMore(int page, int totalItemsCount) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to your AdapterView
-                customLoadMoreDataFromApi(page);
-                // or customLoadMoreDataFromApi(totalItemsCount);
-                return true; // ONLY if more data is actually being loaded; false otherwise.
-            }
-        });
-
-        populateTimeline(1);
+        // Get the ViewPager
+        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        // Set the ViewPager adapter for the pager
+        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        // Find the Pager sliding tabs
+        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        // Attach the Pager Tabs to the ViewPager
+        tabStrip.setViewPager(vpPager);
 
 
+//        client = TwitterApp.getRestClient();
+//
+//        if (savedInstanceState == null){
+//            fragmentTweetsList = (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
+//        }
+
+//        populateTimeline(1, client, fragmentTweetsList.getAdapter());
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -87,38 +73,40 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     // Append more data into the adapter
-    public void customLoadMoreDataFromApi(int offset) {
-        // This method probably sends out a network request and appends new data items to your adapter.
-        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
-        // Deserialize API response and then construct new objects to append to the adapter
-        populateTimeline(offset);
-    }
+//    public static void customLoadMoreDataFromApi(int offset, TweetsArrayAdapter adapter ) {
+//        // This method probably sends out a network request and appends new data items to your adapter.
+//        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
+//        // Deserialize API response and then construct new objects to append to the adapter
+////        TwitterClient client = TwitterApp.getRestClient();
+////        populateTimeline(offset, client, adapter);
+//    }
 
-    private void populateTimeline(int page){
-        int offset;
-        if (page != 1) {
-            offset = (page-1)*25;
-        } else{
-            offset = 1;
-        }
-        client.getHomeTimeline(offset, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                super.onSuccess(statusCode, headers, response);
-                Log.d("DEBUG", response.toString());
-                // Deserialize JSON
-                // Create the Model and add them to the Adapter
-                // Load the model data in to listview
-                aTweets.addAll(Tweet.fromJsonArray(response));
-                Log.d("DEBUG", aTweets.toString());
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                Log.d("DEBUG", errorResponse.toString());
-            }
-        });
-    }
+
+//    private static void populateTimeline(int page, TwitterClient client, final TweetsArrayAdapter adapter){
+////        int offset;
+////        if (page != 1) {
+////            offset = (page-1)*25;
+////        } else{
+////            offset = 1;
+////        }
+////        client.getHomeTimeline(offset, new JsonHttpResponseHandler() {
+////            @Override
+////            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//////                super.onSuccess(statusCode, headers, response);
+////                Log.d("DEBUG", response.toString());
+////                // Deserialize JSON
+////                // Create the Model and add them to the Adapter
+////                // Load the model data in to listview
+////                adapter.addAll(Tweet.fromJsonArray(response));
+////            }
+////
+////            @Override
+////            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+////                Log.d("DEBUG", errorResponse.toString());
+////            }
+////        });
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -165,7 +153,6 @@ public class TimelineActivity extends AppCompatActivity {
             Long id = data.getExtras().getLong("id", 0);
             Long uid = data.getExtras().getLong("uid", 0);
             String strTweetMessage = data.getExtras().getString("body");
-//            Toast.makeText(this, ("body : " + strTweetMessage), Toast.LENGTH_SHORT).show();
             User u = new User(strFullName, strUserName, uid, strPicUrl, strAccountUrl);
 
             String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
@@ -173,11 +160,48 @@ public class TimelineActivity extends AppCompatActivity {
             sf.setLenient(true);
             String currentDateandTime = sf.format(new Date());
 
-//            Log.d("DEBUG", "current time : " + currentDateandTime);
             Tweet myTweet = new Tweet(id, u, strTweetMessage, currentDateandTime);
-            aTweets.insert(myTweet, 0);
-            aTweets.notifyDataSetChanged();
+            fragmentTweetsList.getAdapter().insert(myTweet, 0);
+            fragmentTweetsList.getAdapter().notifyDataSetChanged();
         }
     }
 
+    public void onProfileView(MenuItem mi){
+        Intent i = new Intent(this, ProfileActivity.class);
+        startActivity(i);
+    }
+
+    // Return the order of fragments in the view pager
+    public class TweetsPagerAdapter extends FragmentPagerAdapter{
+        private String tabTitles[] = { "Home", "Mentions"};
+
+        // This is how adapter gets the manager which is used to insert / remove fragments to / from the activity
+        public TweetsPagerAdapter(android.support.v4.app.FragmentManager fm){
+            super(fm);
+        }
+
+        // The order and creation of fragments within the pager
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0){
+                return new HomeTimelineFragment();
+            } else if (position == 1){
+                return new MentionsTimelineFragment();
+            } else {
+                return null;
+            }
+        }
+
+        // Returns how many fragments are available
+        @Override
+        public int getCount() {
+            return tabTitles.length;
+        }
+
+        // Return the tab titles
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+    }
 }

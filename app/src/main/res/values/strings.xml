@@ -7,7 +7,9 @@
     <string name="title_activity_compose">Share Status</string>
 
     <string name="text_share_status">Enter the status to Share</string>
+    <string name="text_profile">Profile</string>
     <string name="action_compose">Compose</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 
 </resources>
