@@ -1,12 +1,10 @@
 package com.codepath.apps.awesometwitter.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.awesometwitter.R;
@@ -50,62 +48,10 @@ public class TimelineActivity extends AppCompatActivity {
             fragmentTweetsList = new HomeTimelineFragment();
         }
 
-//        populateTimeline(1, client, fragmentTweetsList.getAdapter());
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
-    // Append more data into the adapter
-//    public static void customLoadMoreDataFromApi(int offset, TweetsArrayAdapter adapter ) {
-//        // This method probably sends out a network request and appends new data items to your adapter.
-//        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
-//        // Deserialize API response and then construct new objects to append to the adapter
-////        TwitterClient client = TwitterApp.getRestClient();
-////        populateTimeline(offset, client, adapter);
-//    }
 
 
-
-//    private static void populateTimeline(int page, TwitterClient client, final TweetsArrayAdapter adapter){
-////        int offset;
-////        if (page != 1) {
-////            offset = (page-1)*25;
-////        } else{
-////            offset = 1;
-////        }
-////        client.getHomeTimeline(offset, new JsonHttpResponseHandler() {
-////            @Override
-////            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//////                super.onSuccess(statusCode, headers, response);
-////                Log.d("DEBUG", response.toString());
-////                // Deserialize JSON
-////                // Create the Model and add them to the Adapter
-////                // Load the model data in to listview
-////                adapter.addAll(Tweet.fromJsonArray(response));
-////            }
-////
-////            @Override
-////            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-////                Log.d("DEBUG", errorResponse.toString());
-////            }
-////        });
-//    }
-
-
-
-
-
-    public void onProfileView(MenuItem mi){
-        Intent i = new Intent(this, ProfileActivity.class);
-        startActivity(i);
-    }
 
 
     // Return the order of fragments in the view pager
@@ -129,7 +75,9 @@ public class TimelineActivity extends AppCompatActivity {
             }
         }
 
-        
+
+
+
         // Returns how many fragments are available
         @Override
         public int getCount() {

@@ -22,7 +22,6 @@ public class MentionsTimelineFragment extends TweetsListFragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApp.getRestClient();
-//        populateTimeline(1, client, fragmentTweetsList.getAdapter());
         populateTimeline(1);
     }
 
@@ -44,8 +43,6 @@ public class MentionsTimelineFragment extends TweetsListFragment{
         client.getMentionsTimeline(offset, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                super.onSuccess(statusCode, headers, response);
-                Log.d("DEBUG", response.toString());
                 // Deserialize JSON
                 // Create the Model and add them to the Adapter
                 // Load the model data in to listview

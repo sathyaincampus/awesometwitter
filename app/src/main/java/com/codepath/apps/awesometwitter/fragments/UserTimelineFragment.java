@@ -23,7 +23,6 @@ public class UserTimelineFragment extends TweetsListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApp.getRestClient();
-//        populateTimeline(1, client, fragmentTweetsList.getAdapter());
         populateTimeline(1);
     }
 
@@ -37,9 +36,6 @@ public class UserTimelineFragment extends TweetsListFragment {
 
     // Append more data into the adapter
     public void customLoadMoreDataFromApi(int offset) {
-        // This method probably sends out a network request and appends new data items to your adapter.
-        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
-        // Deserialize API response and then construct new objects to append to the adapter
         populateTimeline(offset);
     }
 
@@ -54,11 +50,6 @@ public class UserTimelineFragment extends TweetsListFragment {
         client.getUserTimeline(screen_name, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                super.onSuccess(statusCode, headers, response);
-                Log.d("DEBUG", response.toString());
-                // Deserialize JSON
-                // Create the Model and add them to the Adapter
-                // Load the model data in to listview
                 addAll(Tweet.fromJsonArray(response));
             }
 
